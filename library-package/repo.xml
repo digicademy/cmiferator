@@ -1,0 +1,28 @@
+<meta xmlns="http://exist-db.org/xquery/repo">
+  <description>
+    Generate Correspondence Metadata Interchange File from eXist-db based editions of letters (e.g. using ediarum) ready for ingest in correspSearch
+  </description>
+  <author>
+    Julian Jarosch
+  </author>
+  <website>
+    https://github.com/digicademy/cmiferator
+  </website>
+  <status>
+    alpha
+  </status>
+  <license>
+    MIT
+  </license>
+  <copyright>
+    true
+  </copyright>
+  <type>
+    library
+  </type>
+  <target/>
+  <prepare>
+    pre-install.xql
+  </prepare>
+  <deployed/>
+</meta>

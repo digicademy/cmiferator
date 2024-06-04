@@ -1,0 +1,74 @@
+<configuration xmlns="http://www.digitale-akademie.de/cmiferator">
+    
+    <!-- 
+    (:
+    : CMIFerator
+    : 
+    : Developed by Julian Jarosch
+    : Academy of Sciences and Literature | Mainz
+    : Digital Academy
+    :
+    : Configuration of parameters for updating and wrapping.
+    :
+    : @author Julian Jarosch
+    : @email <Julian.Jarosch@adwmainz.de>
+    : @licence MIT
+    :)
+    -->
+    
+    
+    <!-- metadata of the CMIF file -->
+    <header>
+        <!-- plain text: title of the CMIF file – may be different from the project name -->
+        <title>Die sozinianischen Briefwechsel: Zwischen Theologie, frühmoderner Naturwissenschaft
+            und politischer Korrespondenz</title>
+        
+        <!-- XML fragment: name as plain text, can include the <email> element in TEI namespace -->
+        <editor>Julian Jarosch <email xmlns="http://www.tei-c.org/ns/1.0">sbw@adwmainz.de</email></editor>
+        
+        <!-- XML fragment: one <ref> element in TEI namespace -->
+        <publisher>
+            <ref xmlns="http://www.tei-c.org/ns/1.0" target="http://www.adwmainz.de/">Akademie der
+                Wissenschaften und der Literatur | Mainz</ref>
+        </publisher>
+        
+        <!-- plain text: URL where the CMIF file is be available online -->
+        <url>https://gitlab.rlp.net/adwmainz/digicademy/sbw/csv-data-dump/-/raw/main/data/cmif/corresp.xml</url>
+        
+        <!-- plain text: UUID for the source -->
+        <uuid>b3b22a15-9906-406b-aae1-7d7fa2292e71</uuid>
+        
+        <!-- XML fragment: content of the <bibl> element (in TEI namespace where necessary) -->
+        <source>Die sozinianischen Briefwechsel:
+                Zwischen Theologie, frühmoderner Naturwissenschaft und politischer Korrespondenz,
+                erarbeitet und herausgegeben von Kęstutis Daugirdas und Andreas Kuczera.
+                Johannes a Lasco Bibliothek Emden, 2020.
+                <ref xmlns="http://www.tei-c.org/ns/1.0" target="https://sozinianer.de">https://sozinianer.de</ref></source>
+    </header>
+    
+    <!-- namespace / base URL to construct the permalink -->
+    <namespace>https://sozinianer.de/id/MAIN_</namespace>
+    
+    <!-- index files -->
+    <indices>
+        <persons>
+            <resource>/db/apps/tei2json/xml/Register/Personen.xml</resource>
+            <collection/>
+            <stylesheet>/db/apps/tei2json/CMIFerate-config/persons-transform.xsl</stylesheet>
+        </persons>
+        <organizations>
+            <resource/>
+            <collection/>
+            <stylesheet/>
+        </organizations>
+        <places>
+            <resource>/db/apps/tei2json/xml/Register/Orte.xml</resource>
+            <collection/>
+            <stylesheet>/db/apps/tei2json/CMIFerate-config/places-transform.xsl</stylesheet>
+        </places>
+    </indices>
+    
+    <!-- content files -->
+    <!-- a potential idea, currently not implemented -->
+    <!--<files/>-->
+</configuration>

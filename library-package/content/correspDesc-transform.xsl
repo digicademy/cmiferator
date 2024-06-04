@@ -1,0 +1,148 @@
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:tei="http://www.tei-c.org/ns/1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:c8r="http://www.digitale-akademie.de/cmiferator" exclude-result-prefixes="#all" version="3.0">
+    
+    <!-- 
+    (:
+    : CMIFerator
+    : 
+    : Developed by Julian Jarosch
+    : Academy of Sciences and Literature | Mainz
+    : Digital Academy
+    :
+    : Stylesheet for transforming TEI P5 to the CMIF subset.
+    :
+    : @author Julian Jarosch
+    : @email <Julian.Jarosch@adwmainz.de>
+    : @licence MIT
+    :)
+    -->
+    
+    
+    
+    <!-- O P T I O N S -->
+    
+    <xsl:output indent="yes" method="xml" omit-xml-declaration="yes"/>
+    
+    
+    
+    <!-- P A R A M E T E R S -->
+    
+    <!-- get configuration file path -->
+    <xsl:param name="config-filepath"/>
+    
+    
+    
+    <!-- V A R I A B L E S -->
+    
+    <!-- load configuration file -->
+    <xsl:variable name="config" select="doc($config-filepath)/c8r:configuration"/>
+    
+    
+    
+    <!-- T E M P L A T E S -->
+    
+    <!-- root -->
+    
+    <xsl:template match="/">
+        <!-- this specifies the “usual” practice and might potentially exclude TEI Corpus or TEI nested within tei:text -->
+        <xsl:apply-templates select="tei:TEI/tei:teiHeader/tei:profileDesc/tei:correspDesc"/>
+    </xsl:template>
+    
+    
+    <!-- correspDesc -->
+    
+    <xsl:template match="tei:correspDesc[1]">
+        <correspDesc xmlns="http://www.tei-c.org/ns/1.0" source="#{$config/c8r:header/c8r:uuid/child::text()}">
+            <xsl:attribute name="ref">
+                <!-- concatenate the permalink from a namespace / base URL and the xml:id of the file -->
+                <!-- TODO: it may be better to not do this, and instead take the complete permalink from an <idno> within the file -->
+                <!-- if the latter, that may need to be configured using an XPath -->
+                <xsl:value-of select="$config/c8r:namespace/child::text() || ./ancestor::tei:TEI/@xml:id"/>
+            </xsl:attribute>
+            <xsl:apply-templates select="tei:correspAction"/>
+        </correspDesc>
+    </xsl:template>
+    <!-- only keep one correspDesc per file (pick the first one) -->
+    <xsl:template match="tei:correspDesc[position() &gt; 1]"/>
+    
+    
+    <!-- correspAction -->
+    
+    <xsl:template match="tei:correspAction">
+        <!-- only correspActions sent and received are allowed in CMIF – discard all others -->
+        <xsl:if test="@type = ('sent', 'received')">
+            <xsl:variable name="type" select="@type"/>
+            <correspAction xmlns="http://www.tei-c.org/ns/1.0" type="{$type}">
+                <!-- if no persName element is present, a “dummy” element with a fixed content needs to be inserted -->
+                <xsl:if test="not(tei:persName)">
+                    <persName>Unbekannt</persName>
+                </xsl:if>
+                <xsl:apply-templates select="(tei:date | tei:persName | tei:orgName | tei:placeName)"/>
+            </correspAction>
+        </xsl:if>
+    </xsl:template>
+    
+    
+    <!-- date -->
+    
+    <xsl:template match="tei:date[1]">
+        <!-- check if any of the dating attributes are present and not empty -->
+        <xsl:if test="normalize-space(string-join(@when | @notBefore | @notAfter | @from | @to))">
+            <date xmlns="http://www.tei-c.org/ns/1.0">
+                <!-- only retain allowed attributes -->
+                <xsl:for-each select="(@when | @notBefore | @notAfter | @from | @to)">
+                    <!-- only three types of notation are allowed – discard all others -->
+                    <!-- TODO: when none of the attributes conform, the resulting date element is empty -->
+                    <xsl:if test="matches(., '^\d{4}(-\d{2}){0,2}$')">
+                        <xsl:copy/>
+                    </xsl:if>
+                </xsl:for-each>
+            </date>
+        </xsl:if>
+    </xsl:template>
+    <!-- only keep one date per correspAction (pick the first one) -->
+    <xsl:template match="tei:correspAction/tei:date[position() &gt; 1]"/>
+    
+    
+    <!-- persName -->
+    
+    <xsl:template match="tei:persName">
+        <persName xmlns="http://www.tei-c.org/ns/1.0">
+            <xsl:if test="normalize-space(@ref)">
+                <xsl:attribute name="ref">
+                    <xsl:value-of select="@ref"/>
+                </xsl:attribute>
+            </xsl:if>
+            <xsl:value-of select="."/>
+        </persName>
+    </xsl:template>
+    
+    
+    <!-- orgName -->
+    
+    <xsl:template match="tei:orgName">
+        <orgName xmlns="http://www.tei-c.org/ns/1.0">
+            <xsl:if test="normalize-space(@ref)">
+                <xsl:attribute name="ref">
+                    <xsl:value-of select="@ref"/>
+                </xsl:attribute>
+            </xsl:if>
+            <xsl:value-of select="."/>
+        </orgName>
+    </xsl:template>
+    
+    
+    <!-- placeName -->
+    
+    <xsl:template match="tei:placeName">
+        <placeName xmlns="http://www.tei-c.org/ns/1.0">
+            <xsl:if test="normalize-space(@ref)">
+                <xsl:attribute name="ref">
+                    <xsl:value-of select="@ref"/>
+                </xsl:attribute>
+            </xsl:if>
+            <xsl:value-of select="."/>
+        </placeName>
+    </xsl:template>
+    
+    
+</xsl:stylesheet>
