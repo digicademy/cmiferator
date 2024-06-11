@@ -38,18 +38,4 @@
         </xsl:element>
     </xsl:template>
 
-    <!--<xsl:template match="tei:placeName">
-        <xsl:variable name="key" select="@key"/>
-        <xsl:variable name="ref" select="$places/tei:TEI/tei:text/tei:body/tei:listPlace/tei:place[@xml:id = $key]/tei:idno[matches(text(), 'geonames.org')][1]/text()/normalize-space()"/>
-        <xsl:variable name="name" select="$places/tei:TEI/tei:text/tei:body/tei:listPlace/tei:place[@xml:id = $key]/tei:placeName[@type = 'reg']/text()/normalize-space()"/>
-        <placeName xmlns="http://www.tei-c.org/ns/1.0">
-            <xsl:if test="$ref != ''">
-                <xsl:attribute name="ref">
-                    <xsl:value-of select="$ref"/>
-                </xsl:attribute>
-            </xsl:if>
-            <xsl:value-of select="$name"/>
-        </placeName>
-    </xsl:template>-->
-
 </xsl:stylesheet>

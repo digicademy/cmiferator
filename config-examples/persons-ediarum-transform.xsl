@@ -49,35 +49,4 @@
         </xsl:element>
     </xsl:template>
 
-    <!--<xsl:template match="tei:persName">
-        <xsl:variable name="key" select="@key"/>
-        <xsl:variable name="ref" select="$persons/tei:TEI/tei:text/tei:body/tei:listPerson/tei:person[@xml:id = $key]/tei:idno[matches(text(), 'd-nb\.info/gnd/|viaf.org/viaf/|id\.loc\.gov/authorities/')][1]/text()/normalize-space()"/>
-        <xsl:variable name="name" select="$persons/tei:TEI/tei:text/tei:body/tei:listPerson/tei:person[@xml:id = $key]/tei:persName[@type = 'reg']/normalize-space(string-join((tei:forename, tei:surname, tei:name), ' '))"/>
-        <xsl:choose>
-            <xsl:when test="lower-case(normalize-space(@key)) = 'nn'">
-                <persName xmlns="http://www.tei-c.org/ns/1.0">
-                    <xsl:text>Unbekannt</xsl:text>
-                </persName>
-            </xsl:when>
-            <xsl:when test="lower-case(normalize-space(.)) = 'nn'">
-                <persName xmlns="http://www.tei-c.org/ns/1.0">
-                    <xsl:attribute name="ref">
-                        <xsl:value-of select="@key"/>
-                    </xsl:attribute>
-                    <xsl:text>Unbekannt</xsl:text>
-                </persName>
-            </xsl:when>
-            <xsl:otherwise>
-                <persName xmlns="http://www.tei-c.org/ns/1.0">
-                    <xsl:if test="$ref != ''">
-                        <xsl:attribute name="ref">
-                            <xsl:value-of select="$ref"/>
-                        </xsl:attribute>
-                    </xsl:if>
-                    <xsl:value-of select="$name"/>
-                </persName>
-            </xsl:otherwise>
-        </xsl:choose>
-    </xsl:template>-->
-
 </xsl:stylesheet>

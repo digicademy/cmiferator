@@ -196,4 +196,4 @@ declare %private function c8r:name-transform($element as element(), $index as do
     (: if the lookup yielded no result, return the input element unchanged :)
     return if ($index-entry) then $index-entry
     else $element
-}
+};

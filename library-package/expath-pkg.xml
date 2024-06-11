@@ -1,14 +1,7 @@
-<package xmlns="http://expath.org/ns/pkg" name="http://www.digitale-akademie.de/cmiferator" abbrev="cmiferator" version="0.0.1" spec="1.0">
-  <title>
-    CMIFerator
-  </title>
+<package xmlns="http://expath.org/ns/pkg" name="http://www.digitale-akademie.de/cmiferator" abbrev="cmiferator" version="0.0.2" spec="1.0">
+  <title>CMIFerator</title>
   <xquery>
-    <namespace>
-      http://www.digitale-akademie.de/cmiferator
-    </namespace>
-    <file>
-      cmiferator.xqm
-    </file>
+    <namespace>http://www.digitale-akademie.de/cmiferator</namespace>
+    <file>cmiferator.xqm</file>
   </xquery>
-  <dependency package="http://exist-db.org/xquery/transform"/>
 </package>
