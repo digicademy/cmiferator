@@ -30,7 +30,7 @@ declare %private variable $c8r:correspDesc-transform := doc('./correspDesc-trans
 : This function wraps <correspDesc> elements in a standard
 : CMIF structure.
 :
-: @param $files the TEI document(s) (one or more)
+: @param $correspDescs the <correspDesc> element(s) (one or more)
 : to be wrapped in the CMIF template
 : @param $config-filepath file path to the configuration file
 : @return a complete CMIF file composed of the <correspDesc>
@@ -38,12 +38,11 @@ declare %private variable $c8r:correspDesc-transform := doc('./correspDesc-trans
 : configuration file
 :)
 
-declare function c8r:wrap-cmif ($files as element(TEI)+, $config-filepath as xs:string) as document-node() {
+declare function c8r:wrap-CMIF ($correspDescs as element(correspDesc)+, $config-filepath as xs:string) as document-node() {
     
     (: variant: load files from config parameter. currently not implemented :)
     (: let $files := collection($config/c8r:files)/tei:TEI :)
     
-    let $correspDescs := c8r:correspDesc-transform($files, $config-filepath)
     let $cmif := transform:transform($correspDescs,
                                      $c8r:cmif-base-template,
                                      <parameters>
@@ -66,7 +65,7 @@ declare function c8r:wrap-cmif ($files as element(TEI)+, $config-filepath as xs:
 : CMIF standard (subset of TEI)
 :)
 
-declare function c8r:correspDesc-transform($files as element(TEI)+, $config-filepath as xs:string) as element(correspDesc)+ {
+declare function c8r:subset-correspDesc($files as element(TEI)+, $config-filepath as xs:string) as element(correspDesc)+ {
     let $correspDescs := transform:transform($files,
                                              $c8r:correspDesc-transform,
                                              <parameters>
@@ -86,7 +85,7 @@ declare function c8r:correspDesc-transform($files as element(TEI)+, $config-file
 : @return one or more complete TEI document(s).
 :)
 
-declare function c8r:correspAction-update($files as element(TEI)+, $config-filepath as xs:string) as element(TEI)+ {
+declare function c8r:update-correspAction($files as element(TEI)+, $config-filepath as xs:string) as element(TEI)+ {
     
     let $config := doc($config-filepath)/c8r:configuration
     
@@ -106,6 +105,61 @@ declare function c8r:correspAction-update($files as element(TEI)+, $config-filep
     
     return c8r:identity-transform($files, $indices, $stylesheets)
 
+};
+
+(: WRAPPER FUNCTIONS :)
+
+(:~
+: This function updates references to indices within <correspAction>
+: elements, extracts <correspDesc> elements and subsets them for the CMIF
+: standard, and finally wraps them in a standard
+: CMIF structure.
+:
+: @param $files the TEI document(s) (one or more)
+: from which to extract CMIF conformant <correspDesc> elements
+: @param $config-filepath file path to the configuration file
+: @return a complete CMIF file combined with the metadata from the
+: configuration file
+:)
+
+declare function c8r:update-subset-wrap($files as element(TEI)+, $config-filepath as xs:string) as document-node() {
+    let $files := c8r:update-correspAction($files, $config-filepath)
+    let $correspDescs := c8r:subset-correspDesc($files, $config-filepath)
+    return c8r:wrap-CMIF($correspDescs, $config-filepath)
+};
+
+(:~
+: This function updates references to indices within <correspAction>
+: elements, extracts <correspDesc> elements and subsets them for the CMIF
+: standard.
+:
+: @param $files the TEI document(s) (one or more)
+: from which to extract CMIF conformant <correspDesc> elements
+: @param $config-filepath file path to the configuration file
+: @return one or more <correspDesc> elements conforming to the
+: CMIF standard (subset of TEI)
+:)
+
+declare function c8r:update-subset($files as element(TEI)+, $config-filepath as xs:string) as element(correspDesc)+ {
+    let $files := c8r:update-correspAction($files, $config-filepath)
+    return c8r:subset-correspDesc($files, $config-filepath)
+};
+
+(:~
+: This function extracts <correspDesc> elements and subsets them for the CMIF
+: standard, and finally wraps them in a standard
+: CMIF structure.
+:
+: @param $files the TEI document(s) (one or more)
+: from which to extract CMIF conformant <correspDesc> elements
+: @param $config-filepath file path to the configuration file
+: @return a complete CMIF file combined with the metadata from the
+: configuration file
+:)
+
+declare function c8r:subset-wrap($files as element(TEI)+, $config-filepath as xs:string) as document-node() {
+    let $correspDescs := c8r:subset-correspDesc($files, $config-filepath)
+    return c8r:wrap-CMIF($correspDescs, $config-filepath)
 };
 
 (: LOCAL HELPER FUNCTIONS :)

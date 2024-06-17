@@ -80,7 +80,7 @@
                     </sourceDesc>
                 </fileDesc>
                 <profileDesc>
-                    <xsl:copy-of select="descendant::tei:correspDesc"/>
+                    <xsl:copy-of select="descendant-or-self::tei:correspDesc"/>
                 </profileDesc>
             </teiHeader>
             <text>
