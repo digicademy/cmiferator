@@ -22,8 +22,12 @@ import module namespace transform = "http://exist-db.org/xquery/transform";
 
 declare default element namespace "http://www.tei-c.org/ns/1.0";
 
-declare %private variable $c8r:cmif-base-template := doc('./CMIF-base.xsl');
-declare %private variable $c8r:correspDesc-transform := doc('./correspDesc-transform.xsl');
+declare namespace expath = "http://expath.org/ns/pkg";
+
+declare %private variable $c8r:package-base-path := util:collection-name(collection('/db/system/repo')//expath:package[@name = "http://www.digitale-akademie.de/cmiferator"]);
+
+declare %private variable $c8r:cmif-base-template := doc($c8r:package-base-path || '/content/CMIF-base.xsl');
+declare %private variable $c8r:correspDesc-transform := doc($c8r:package-base-path || '/content/correspDesc-transform.xsl');
 
 
 (:~
