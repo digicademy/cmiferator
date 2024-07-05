@@ -32,7 +32,7 @@
             <xsl:attribute name="ref">
                 <!-- select norm data provider with highest priority -->
                 <!-- only retain one norm data URI -->
-                <xsl:variable name="ref" select="tei:idno[matches(string-join(text(), ''), 'd-nb\.info/gnd/|viaf.org/viaf/|id\.loc\.gov/authorities/|ark\.bnf\.fr/ark:/')][1]"/>
+                <xsl:variable name="ref" select="tei:idno[matches(string-join(text(), ''), 'd-nb\.info/gnd/|viaf\.org/viaf/|id\.loc\.gov/authorities/|ark\.bnf\.fr/ark:/')][1]"/>
                 <!-- make LoC URI scheme conform to correspSearch expectation -->
                 <xsl:value-of select="replace($ref, 'id\.loc\.gov/authorities/', 'lccn.loc.gov/')"/>
             </xsl:attribute>
