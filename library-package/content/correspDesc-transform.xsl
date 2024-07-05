@@ -35,7 +35,7 @@
     
     <!-- load configuration file -->
     <xsl:variable name="config" select="doc($config-filepath)/c8r:configuration"/>
-    
+    <xsl:variable name="unknown"><xsl:text>Unbekannt</xsl:text></xsl:variable>
     
     
     <!-- T E M P L A T E S -->
@@ -58,6 +58,18 @@
                 <!-- if the latter, that may need to be configured using an XPath -->
                 <xsl:value-of select="$config/c8r:namespace/child::text() || ./ancestor::tei:TEI/@xml:id"/>
             </xsl:attribute>
+            <!-- correspAction[@type = 'sent'] must always be included -->
+            <xsl:if test="not(tei:correspAction[@type = 'sent'])">
+                <correspAction type="sent">
+                    <persName><xsl:value-of select="$unknown"/></persName>
+                </correspAction>
+            </xsl:if>
+            <!-- correspAction[@type = 'received'] must always be included -->
+            <xsl:if test="not(tei:correspAction[@type = 'received'])">
+                <correspAction type="received">
+                    <persName><xsl:value-of select="$unknown"/></persName>
+                </correspAction>
+            </xsl:if>
             <xsl:apply-templates select="tei:correspAction"/>
         </correspDesc>
     </xsl:template>
@@ -74,7 +86,7 @@
             <correspAction xmlns="http://www.tei-c.org/ns/1.0" type="{$type}">
                 <!-- if no persName element is present, a “dummy” element with a fixed content needs to be inserted -->
                 <xsl:if test="not(tei:persName)">
-                    <persName>Unbekannt</persName>
+                    <persName><xsl:value-of select="$unknown"/></persName>
                 </xsl:if>
                 <xsl:apply-templates select="(tei:date | tei:persName | tei:orgName | tei:placeName)"/>
             </correspAction>
