@@ -32,7 +32,7 @@
             <xsl:attribute name="ref">
                 <!-- only GeoNames is allowed -->
                 <!-- only retain one norm data URI -->
-                <xsl:value-of select="tei:idno[matches(text(), 'geonames\.org')][1]/text()/normalize-space()"/>
+                <xsl:value-of select="tei:idno[matches(string-join(text(), ''), 'geonames\.org|wikidata\.org')][1]/text()/normalize-space()"/>
             </xsl:attribute>
             <xsl:value-of select="tei:placeName[@type = 'reg']/text()/normalize-space()"/>
         </xsl:element>
