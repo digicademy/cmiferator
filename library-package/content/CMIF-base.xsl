@@ -78,7 +78,11 @@
                             <xsl:copy-of select="$config/c8r:source/child::node()"/>
                         </bibl>
                     </sourceDesc>
-                </fileDesc>
+                </fileDesc><xsl:text>
+        </xsl:text>
+                <xsl:comment>this CMIF was wrapped by the CMIFerator</xsl:comment><xsl:text>
+        </xsl:text>
+                <xsl:comment>https://github.com/digicademy/cmiferator</xsl:comment>
                 <profileDesc>
                     <xsl:copy-of select="descendant-or-self::tei:correspDesc"/>
                 </profileDesc>
