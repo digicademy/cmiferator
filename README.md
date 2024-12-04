@@ -50,6 +50,8 @@ Subset `<correspDesc>` elements in individual letter files for (strict) conforma
 
 If this behaviour is too restrictive for your use case, a possible solution might be to first do a project-specific transformation to re-order/select your desired elements.
 
+For CMIF version 2 compatibility, the `<note>` and the `<ref>` elements in it are passed through by this function. (Currently, the CMIFerator contains no mechanism to create these elements.)
+
 ##### Configuration parameter used by this function
 
 Currently, the CMIFerator makes the hard assumption that the permalinks for your letters will be concatenated from a base URL and the `@xml:id` attribute of the root `<TEI>` element. This may be subject to change in future versions.

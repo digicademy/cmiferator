@@ -1,4 +1,4 @@
-<package xmlns="http://expath.org/ns/pkg" name="http://www.digitale-akademie.de/cmiferator" abbrev="cmiferator" version="0.0.4" spec="1.0">
+<package xmlns="http://expath.org/ns/pkg" name="http://www.digitale-akademie.de/cmiferator" abbrev="cmiferator" version="0.1.0" spec="1.0">
   <title>CMIFerator</title>
   <xquery>
     <namespace>http://www.digitale-akademie.de/cmiferator</namespace>

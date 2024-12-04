@@ -70,7 +70,7 @@
                     <persName><xsl:value-of select="$unknown"/></persName>
                 </correspAction>
             </xsl:if>
-            <xsl:apply-templates select="tei:correspAction"/>
+            <xsl:apply-templates select="(tei:correspAction | tei:note)"/>
         </correspDesc>
     </xsl:template>
     <!-- only keep one correspDesc per file (pick the first one) -->
@@ -154,6 +154,34 @@
             </xsl:if>
             <xsl:value-of select="."/>
         </placeName>
+    </xsl:template>
+    
+    
+    <!-- note -->
+    
+    <xsl:template match="tei:note[1]">
+        <xsl:if test="./tei:ref[@type][@target]">
+            <note xmlns="http://www.tei-c.org/ns/1.0">
+                <xsl:apply-templates select="tei:ref"/>
+            </note>
+        </xsl:if>
+    </xsl:template>
+    <xsl:template match="tei:note[position() &gt; 1]"/>
+    
+    
+    <!-- ref -->
+    
+    <xsl:template match="tei:ref">
+        <xsl:if test=".[matches(@type, '^https://lod.academy/cmif/vocab/terms#')][normalize-space(@target)]">
+            <ref xmlns="http://www.tei-c.org/ns/1.0">
+                <xsl:attribute name="type">
+                    <xsl:value-of select="@type"/>
+                </xsl:attribute>
+                <xsl:attribute name="target">
+                    <xsl:value-of select="@target"/>
+                </xsl:attribute>
+            </ref>
+        </xsl:if>
     </xsl:template>
     
     
