@@ -180,6 +180,7 @@
                 <xsl:attribute name="target">
                     <xsl:value-of select="@target"/>
                 </xsl:attribute>
+                <xsl:value-of select="."/>
             </ref>
         </xsl:if>
     </xsl:template>
