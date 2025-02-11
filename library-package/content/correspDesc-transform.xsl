@@ -71,7 +71,8 @@
                     <persName><xsl:value-of select="$unknown"/></persName>
                 </correspAction>
             </xsl:if>
-            <xsl:apply-templates select="(tei:correspAction | tei:note)"/>
+            <xsl:apply-templates select="tei:correspAction"/>
+            <xsl:apply-templates select="tei:note"/>
         </correspDesc>
     </xsl:template>
     <!-- only keep one correspDesc per file (pick the first one) -->
@@ -86,10 +87,17 @@
             <xsl:variable name="type" select="@type"/>
             <correspAction xmlns="http://www.tei-c.org/ns/1.0" type="{$type}">
                 <!-- if no persName element is present, a “dummy” element with a fixed content needs to be inserted -->
-                <xsl:if test="not(tei:persName)">
-                    <persName><xsl:value-of select="$unknown"/></persName>
-                </xsl:if>
-                <xsl:apply-templates select="(tei:date | tei:persName | tei:orgName | tei:placeName)"/>
+                <xsl:choose>
+                    <xsl:when test="not(tei:persName)">
+                        <persName><xsl:value-of select="$unknown"/></persName>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:apply-templates select="tei:persName"/>
+                    </xsl:otherwise>
+                </xsl:choose>
+                <xsl:apply-templates select="tei:orgName"/>
+                <xsl:apply-templates select="tei:placeName"/>
+                <xsl:apply-templates select="tei:date"/>
             </correspAction>
         </xsl:if>
     </xsl:template>
