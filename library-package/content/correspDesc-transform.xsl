@@ -198,6 +198,7 @@
             </note>
         </xsl:if>
     </xsl:template>
+    <!-- only keep one note per correspDesc (pick the first one) -->
     <xsl:template match="tei:note[position() &gt; 1]"/>
     
     
