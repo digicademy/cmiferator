@@ -36,6 +36,7 @@
     <!-- load configuration file -->
     <xsl:variable name="config" select="doc($config-filepath)/c8r:configuration"/>
     <xsl:variable name="unknown"><xsl:text>Unbekannt</xsl:text></xsl:variable>
+    <xsl:variable name="date_regex"><xsl:text>^\d{4}(-\d{2}){0,2}$</xsl:text></xsl:variable>
     
     
     <!-- T E M P L A T E S -->
@@ -98,22 +99,45 @@
     
     <xsl:template match="tei:date[1]">
         <!-- check if any of the dating attributes are present and not empty -->
-        <xsl:if test="normalize-space(string-join(@when | @notBefore | @notAfter | @from | @to))">
-            <date xmlns="http://www.tei-c.org/ns/1.0">
-                <!-- only retain allowed attributes -->
-                <xsl:for-each select="(@when | @notBefore | @notAfter | @from | @to)">
-                    <!-- only three types of notation are allowed – discard all others -->
-                    <!-- TODO: when none of the attributes conform, the resulting date element is empty -->
-                    <xsl:if test="matches(., '^\d{4}(-\d{2}){0,2}$')">
-                        <xsl:copy/>
-                    </xsl:if>
-                </xsl:for-each>
-            </date>
+        <xsl:if test="normalize-space(string-join(@when | @from | @to | @notBefore | @notAfter))">
+            <!-- restrict to allowed combinations of attributes -->
+            <!-- at the same time, check conformance of attribute content to date format (RegEx) -->
+            <xsl:choose>
+                <xsl:when test="matches(@when, $date_regex) and not(matches(@from, $date_regex)) and not(matches(@to, $date_regex)) and not(matches(@notBefore, $date_regex)) and not(matches(@notAfter, $date_regex))">
+                    <!-- only @when -->
+                    <date xmlns="http://www.tei-c.org/ns/1.0">
+                        <xsl:copy select="@when"/>
+                    </date>
+                </xsl:when>
+                <xsl:when test="(matches(@from, $date_regex) or matches(@to, $date_regex)) and not(matches(@notBefore, $date_regex)) and not(matches(@notAfter, $date_regex))">
+                    <!-- one or two out of @from and @to -->
+                    <date xmlns="http://www.tei-c.org/ns/1.0">
+                        <xsl:apply-templates select="@from"/>
+                        <xsl:apply-templates select="@to"/>
+                    </date>
+                </xsl:when>
+                <xsl:when test="matches(@notBefore, $date_regex) or matches(@notAfter, $date_regex)">
+                    <!-- one or two out of @notBefore and @notAfter -->
+                    <date xmlns="http://www.tei-c.org/ns/1.0">
+                        <xsl:apply-templates select="@notBefore"/>
+                        <xsl:apply-templates select="@notAfter"/>
+                    </date>
+                </xsl:when>
+                <!-- if there is an unexpected combination of attributes – e.g. a well-formed @from and a well-formed @notAfter – no <date> will be output -->
+            </xsl:choose>
+            
         </xsl:if>
     </xsl:template>
     <!-- only keep one date per correspAction (pick the first one) -->
     <xsl:template match="tei:correspAction/tei:date[position() &gt; 1]"/>
     
+    <!-- date attributes -->
+    
+    <xsl:template match="tei:date/(@from | @to | @notBefore | @notAfter)">
+        <xsl:if test="matches(., $date_regex)">
+            <xsl:copy/>
+        </xsl:if>
+    </xsl:template>
     
     <!-- persName -->
     
