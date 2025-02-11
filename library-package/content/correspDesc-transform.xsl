@@ -53,11 +53,20 @@
     
     <xsl:template match="tei:correspDesc[1]">
         <correspDesc xmlns="http://www.tei-c.org/ns/1.0" source="#{$config/c8r:header/c8r:uuid/child::text()}">
+            <!-- concatenate the permalink from a namespace / base URL and the xml:id of the file -->
+            <!-- TODO: it may be better to not do this, and instead take the complete permalink from an <idno> within the file -->
+            <!-- if the latter, that may need to be configured using an XPath -->
             <xsl:attribute name="ref">
-                <!-- concatenate the permalink from a namespace / base URL and the xml:id of the file -->
-                <!-- TODO: it may be better to not do this, and instead take the complete permalink from an <idno> within the file -->
-                <!-- if the latter, that may need to be configured using an XPath -->
-                <xsl:value-of select="$config/c8r:namespace/child::text() || ./ancestor::tei:TEI/@xml:id"/>
+                <xsl:choose>
+                    <xsl:when test="normalize-space(@ref)">
+                        <!-- if a non-empty @ref is already present, pass that through -->
+                        <xsl:value-of select="@ref"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <!-- otherwise, create @ref as configured -->
+                        <xsl:value-of select="$config/c8r:namespace/child::text() || ./ancestor::tei:TEI/@xml:id"/>
+                    </xsl:otherwise>
+                </xsl:choose>
             </xsl:attribute>
             <!-- correspAction[@type = 'sent'] must always be included -->
             <xsl:if test="not(tei:correspAction[@type = 'sent'])">
