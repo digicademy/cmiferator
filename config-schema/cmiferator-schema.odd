@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:svg="http://www.w3.org/2000/svg"
+  xmlns:math="http://www.w3.org/1998/Math/MathML" xmlns="http://www.tei-c.org/ns/1.0">
+  <teiHeader>
+    <fileDesc>
+      <titleStmt>
+        <title>CMIFerator configuration file schema</title>
+      </titleStmt>
+      <publicationStmt>
+        <p>Publication Information</p>
+      </publicationStmt>
+      <sourceDesc>
+        <p>Information about the source</p>
+      </sourceDesc>
+    </fileDesc>
+  </teiHeader>
+  <text>
+    <body>
+      <schemaSpec ident="cmiferator-config" ns="http://www.digitale-akademie.de/cmiferator" start="configuration">
+        <elementSpec ident="configuration">
+          <content>
+            <sequence>
+              <elementRef key="header"/>
+              <elementRef key="namespace"/>
+              <elementRef key="indices"/>
+            </sequence>
+          </content>
+        </elementSpec>
+        <elementSpec ident="header">
+          <desc>metadata of the CMIF file</desc>
+          <content>
+            <sequence>
+              <elementRef key="title"/>
+              <elementRef key="editor"/>
+              <elementRef key="publisher"/>
+              <elementRef key="url"/>
+              <elementRef key="uuid"/>
+              <elementRef key="source"/>
+            </sequence>
+          </content>
+        </elementSpec>
+        <elementSpec ident="namespace">
+          <desc>prefix / base URL to construct the permalink</desc>
+          <content>
+            <textNode/>
+          </content>
+        </elementSpec>
+        <elementSpec ident="indices">
+          <desc>index files</desc>
+          <content>
+            <sequence>
+              <elementRef key="persons"/>
+              <elementRef key="organizations"/>
+              <elementRef key="places"/>
+            </sequence>
+          </content>
+        </elementSpec>
+        <elementSpec ident="title">
+          <desc>plain text: title of the CMIF file – may be different from the project name</desc>
+          <content>
+            <textNode/>
+          </content>
+        </elementSpec>
+        <elementSpec ident="editor">
+          <desc>XML fragment: name as plain text, can include the <gi>email</gi> element in TEI namespace</desc>
+        </elementSpec>
+        <elementSpec ident="publisher">
+          <desc>XML fragment: one <gi>ref</gi> element in TEI namespace</desc>
+        </elementSpec>
+        <elementSpec ident="url">
+          <desc>plain text: URL where the CMIF file is available online</desc>
+          <content>
+            <textNode/>
+          </content>
+        </elementSpec>
+        <elementSpec ident="uuid">
+          <desc>plain text: UUID for the source</desc>
+          <!-- can I import TEI data types to make this conform to UUID? -->
+          <content>
+            <textNode/>
+          </content>
+        </elementSpec>
+        <elementSpec ident="source"></elementSpec>
+        <elementSpec ident="persons">
+          <content>
+            <macroRef key="index"/>
+          </content>
+        </elementSpec>
+        <elementSpec ident="organizations">
+          <content>
+            <macroRef key="index"/>
+          </content>
+        </elementSpec>
+        <elementSpec ident="places">
+          <content>
+            <macroRef key="index"/>
+          </content>
+        </elementSpec>
+        <macroSpec ident="index">
+          <content>
+            <sequence>
+              <elementRef key="resource"/>
+              <elementRef key="collection"/>
+              <elementRef key="stylesheet"/>
+            </sequence>
+          </content>
+        </macroSpec>
+        <elementSpec ident="resource">
+          <content>
+            <textNode/>
+          </content>
+        </elementSpec>
+        <elementSpec ident="collection">
+          <content>
+            <textNode/>
+          </content>
+        </elementSpec>
+        <elementSpec ident="stylesheet">
+          <content>
+            <textNode/>
+          </content>
+        </elementSpec>
+      </schemaSpec>
+    </body>
+  </text>
+</TEI>
